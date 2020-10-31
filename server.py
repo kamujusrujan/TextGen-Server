@@ -42,22 +42,13 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 
-# data = []
-# with (open("tokenizer.pickle", "rb")) as openfile:
-#     while True:
-#         try:
-#             data.append(pickle.load(openfile))
-#         except EOFError:
-#             break
-# tokenizer = data[0]
-
 with open('tokenizer.pkl', 'rb') as handle:
 	tokenizer = pickle.load(handle)
 
 
 all_words = list(tokenizer.word_index.keys())
 
-model = load_model('model.h5')
+model = load_model('./model.h5')
 
 
 def get_title(text):
@@ -67,7 +58,6 @@ def get_title(text):
   out = model.predict(temp)
   sentence = [ np.argmax(word)  for word in out[0]]
   decoded = [ tokenizer.index_word[index]  for index in sentence if index!= 0 ]
-
   return decoded[1:-1]
 
 
