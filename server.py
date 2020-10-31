@@ -12,7 +12,7 @@ filterwarnings("ignore")
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS, cross_origin
 import requests
-
+from zipfile import ZipFile
 
 '''
 MAYBE REQUIRED MODULES
@@ -23,17 +23,30 @@ Keras-Preprocessing == 1.1.2
 '''
 
 
-# if not os.path.exists('tokenizer.pkl'):
-# 	print('downloading tokenizer')
-# 	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
-# 	open('tokenizer.pkl','wb').write(file.content)
+
+
+'''
+if not os.path.exists('tokenizer.pkl'):
+	print('downloading tokenizer')
+	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
+	open('tokenizer.pkl','wb').write(file.content)
 
 
 if not os.path.exists('model.h5'):
 	print('downloading model')
 	file = requests.get('https://srv-store1.gofile.io/download/qc40yD/model.h5')
 	open('model.h5','wb').write(file.content)
+'''
 
+
+
+if not os.path.exists('files.zip'):
+	print('downloading files...')
+	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
+	open('files.zip','wb').write(file.content)
+	
+with ZipFile('files.zip','r') as file:
+	file.extractall()
 
 
 app = Flask(__name__)
@@ -41,14 +54,13 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-
-with open('tokenizer.pkl', 'rb') as handle:
+with open('tokenizer.pickle', 'rb') as handle:
 	tokenizer = pickle.load(handle)
 
 
 all_words = list(tokenizer.word_index.keys())
 
-model = load_model('./model.h5')
+model = load_model('model.h5')
 
 
 def get_title(text):
@@ -58,6 +70,7 @@ def get_title(text):
   out = model.predict(temp)
   sentence = [ np.argmax(word)  for word in out[0]]
   decoded = [ tokenizer.index_word[index]  for index in sentence if index!= 0 ]
+
   return decoded[1:-1]
 
 
