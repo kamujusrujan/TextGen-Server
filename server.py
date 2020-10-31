@@ -23,10 +23,10 @@ Keras-Preprocessing == 1.1.2
 '''
 
 
-if not os.path.exists('tokenizer.pickle'):
+if not os.path.exists('tokenizer.pkl'):
 	print('downloading tokenizer')
 	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
-	open('tokenizer.pickle','wb').write(file.content)
+	open('tokenizer.pkl','wb').write(file.content)
 
 
 if not os.path.exists('model.h5'):
@@ -51,7 +51,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 #             break
 # tokenizer = data[0]
 
-with open('tokenizer.pickle', 'rb') as handle:
+with open('tokenizer.pkl', 'rb') as handle:
 	tokenizer = pickle.load(handle)
 
 
