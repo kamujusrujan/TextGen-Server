@@ -6,6 +6,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow.keras.models import load_model
 import pickle 
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
 from warnings import filterwarnings
 filterwarnings("ignore")
 from flask import Flask, abort, jsonify, request
@@ -28,6 +29,10 @@ if not os.path.exists('tokenizer.pickle'):
 	open('tokenizer.pickle','wb').write(file.content)
 
 
+with open('tokenizer.pickle', 'rb') as handle:
+	tokenizer = pickle.load(handle)
+
+
 if not os.path.exists('model.h5'):
 	print('downloading model')
 	file = requests.get('https://srv-store1.gofile.io/download/qc40yD/model.h5')
@@ -35,23 +40,11 @@ if not os.path.exists('model.h5'):
 
 
 
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-
-
-data = []
-with (open("tokenizer.pickle", "rb")) as openfile:
-    while True:
-        try:
-            data.append(pickle.load(openfile))
-        except EOFError:
-            break
-tokenizer = data[0]
-
-# with open('tokenizer.pickle', 'rb') as handle:
-# 	tokenizer = pickle.load(handle)
 
 
 all_words = list(tokenizer.word_index.keys())
