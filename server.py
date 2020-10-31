@@ -1,6 +1,6 @@
 import tensorflow as tf 
 import numpy as np
-import nltk 
+# import nltk 
 import os 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 from tensorflow.keras.models import load_model
@@ -13,10 +13,13 @@ from flask_cors import CORS, cross_origin
 import requests
 
 
-#gensim == 3.8.3
-# Keras == 2.4.3
-# Keras-Preprocessing == 1.1.2
-
+'''
+MAYBE REQUIRED MODULES
+gensim == 3.8.3
+Keras == 2.4.3
+nltk == 3.5
+Keras-Preprocessing == 1.1.2
+'''
 
 
 if not os.path.exists('tokenizer.pickle'):
@@ -77,4 +80,4 @@ def get_gen():
 
 if __name__ == '__main__':
 	app.run(port=int(os.environ.get('PORT', 8080)))
-	
+
