@@ -32,7 +32,7 @@ if not os.path.exists('tokenizer.pickle'):
 	print('downloading tokenizer')
 	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
 	open('tokenizer.pickle','wb').write(file.content)
-
+	
 
 with open('tokenizer.pickle', 'rb') as handle:
 	tokenizer = pickle.load(handle)
