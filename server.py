@@ -41,8 +41,18 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 
-with open('tokenizer.pickle', 'rb') as handle:
-	tokenizer = pickle.load(handle)
+data = []
+with (open("tokenizer.pickle", "rb")) as openfile:
+    while True:
+        try:
+            data.append(pickle.load(openfile))
+        except EOFError:
+            break
+tokenizer = data[0]
+
+# with open('tokenizer.pickle', 'rb') as handle:
+# 	tokenizer = pickle.load(handle)
+
 
 all_words = list(tokenizer.word_index.keys())
 
