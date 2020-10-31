@@ -23,10 +23,10 @@ Keras-Preprocessing == 1.1.2
 '''
 
 
-if not os.path.exists('tokenizer.pkl'):
-	print('downloading tokenizer')
-	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
-	open('tokenizer.pkl','wb').write(file.content)
+# if not os.path.exists('tokenizer.pkl'):
+# 	print('downloading tokenizer')
+# 	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
+# 	open('tokenizer.pkl','wb').write(file.content)
 
 
 if not os.path.exists('model.h5'):
