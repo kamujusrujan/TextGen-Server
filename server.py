@@ -47,7 +47,7 @@ if not os.path.exists('files.zip'):
 	
 print(os.system('file *'))
 
-with ZipFile('files.zip','r') as file:
+with ZipFile('files.zip','rb') as file:
 	file.extractall()
 
 
