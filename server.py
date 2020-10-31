@@ -1,16 +1,16 @@
-# import tensorflow as tf 
-# import numpy as np
+import tensorflow as tf 
+import numpy as np
 # import nltk 
 import os 
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-# from tensorflow.keras.models import load_model
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+from tensorflow.keras.models import load_model
 import pickle 
-# from tensorflow.keras.preprocessing.sequence import pad_sequences
-# from tensorflow.keras.preprocessing.text import Tokenizer
-# from warnings import filterwarnings
-# filterwarnings("ignore")
-# from flask import Flask, abort, jsonify, request
-# from flask_cors import CORS, cross_origin
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
+from warnings import filterwarnings
+filterwarnings("ignore")
+from flask import Flask, abort, jsonify, request
+from flask_cors import CORS, cross_origin
 import requests
 
 
@@ -20,11 +20,6 @@ gensim == 3.8.3
 Keras == 2.4.3
 nltk == 3.5
 Keras-Preprocessing == 1.1.2
-tensorflow == 2.3.1
-Flask == 1.1.2
-Flask-Cors == 3.0.8
-numpy == 1.18.3
-
 '''
 
 
@@ -32,10 +27,6 @@ if not os.path.exists('tokenizer.pickle'):
 	print('downloading tokenizer')
 	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
 	open('tokenizer.pickle','wb').write(file.content)
-	
-
-with open('tokenizer.pickle', 'rb') as handle:
-	tokenizer = pickle.load(handle)
 
 
 if not os.path.exists('model.h5'):
@@ -43,50 +34,61 @@ if not os.path.exists('model.h5'):
 	file = requests.get('https://srv-store1.gofile.io/download/qc40yD/model.h5')
 	open('model.h5','wb').write(file.content)
 
-print(tokenizer)
+
+
+app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 
-# app = Flask(__name__)
-# cors = CORS(app)
-# app.config['CORS_HEADERS'] = 'Content-Type'
+# data = []
+# with (open("tokenizer.pickle", "rb")) as openfile:
+#     while True:
+#         try:
+#             data.append(pickle.load(openfile))
+#         except EOFError:
+#             break
+# tokenizer = data[0]
+
+with open('tokenizer.pickle', 'rb') as handle:
+	tokenizer = pickle.load(handle)
+
+
+all_words = list(tokenizer.word_index.keys())
+
+model = load_model('model.h5')
+
+
+def get_title(text):
+  test_text = text
+  temp = tokenizer.texts_to_sequences([test_text])
+  temp = pad_sequences(temp, maxlen = 10 , padding = 'post')
+  out = model.predict(temp)
+  sentence = [ np.argmax(word)  for word in out[0]]
+  decoded = [ tokenizer.index_word[index]  for index in sentence if index!= 0 ]
+
+  return decoded[1:-1]
+
+
+@app.route('/random')
+def random_headline():
+	number_of_titles = int(request.args.get('items',10))
+	response_texts = []
+	for i in range(number_of_titles):
+		i_response = get_title(" ".join(np.random.choice(all_words,10)))
+		response_texts.append(" ".join(i_response))
+	return jsonify({'articles' : response_texts})
 
 
 
-# all_words = list(tokenizer.word_index.keys())
-
-# model = load_model('model.h5')
-
-
-# def get_title(text):
-#   test_text = text
-#   temp = tokenizer.texts_to_sequences([test_text])
-#   temp = pad_sequences(temp, maxlen = 10 , padding = 'post')
-#   out = model.predict(temp)
-#   sentence = [ np.argmax(word)  for word in out[0]]
-#   decoded = [ tokenizer.index_word[index]  for index in sentence if index!= 0 ]
-
-#   return decoded[1:-1]
+@app.route("/generate" , methods = ['GET'])
+def get_gen():
+	key_words = request.args.get('terms')
+	response_text = ' '.join(get_title(key_words))
+	return jsonify({'article': response_text})
 
 
-# @app.route('/random')
-# def random_headline():
-# 	number_of_titles = int(request.args.get('items',10))
-# 	response_texts = []
-# 	for i in range(number_of_titles):
-# 		i_response = get_title(" ".join(np.random.choice(all_words,10)))
-# 		response_texts.append(" ".join(i_response))
-# 	return jsonify({'articles' : response_texts})
-
-
-
-# @app.route("/generate" , methods = ['GET'])
-# def get_gen():
-# 	key_words = request.args.get('terms')
-# 	response_text = ' '.join(get_title(key_words))
-# 	return jsonify({'article': response_text})
-
-
-# if __name__ == '__main__':
-# 	app.run(port=int(os.environ.get('PORT', 8080)))
+if __name__ == '__main__':
+	app.run(port=int(os.environ.get('PORT', 8080)))
 
