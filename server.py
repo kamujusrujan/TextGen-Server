@@ -45,13 +45,14 @@ def download_url(url, save_path, chunk_size=128):
 		for chunk in r.iter_content(chunk_size=chunk_size):
 			fd.write(chunk)
 	print(os.system('file *'))
+	filename = filename.encode("utf-8")
 	with ZipFile('files.zip','r') as file:
 		file.extractall()
 
 
 
 if not os.path.exists('files.zip'):
-	download_url('https://srv-store1.gofile.io/download/SCImIs/model.zip' , 'files.zip')
+	download_url('http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz' , 'files.zip')
 # 	print('downloading files...')
 # 	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
 # 	open('files.zip','wb').write(file.content)
