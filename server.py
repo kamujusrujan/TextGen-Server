@@ -52,7 +52,7 @@ def download_url(url, save_path, chunk_size=128):
 
 
 if not os.path.exists('files.zip'):
-	download_url('http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz' , 'files.zip')
+	download_url('https://srv-store5.gofile.io/download/MIVJZ4/matty.shakespeare.tar.gz' , 'files.zip')
 # 	print('downloading files...')
 # 	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
 # 	open('files.zip','wb').write(file.content)
