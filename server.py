@@ -25,19 +25,20 @@ Keras-Preprocessing == 1.1.2
 
 
 
-'''
-if not os.path.exists('tokenizer.pkl'):
+if not os.path.exists('tokenizer.pickle'):
 	print('downloading tokenizer')
 	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
-	open('tokenizer.pkl','wb').write(file.content)
+	open('tokenizer.pickle','wb').write(file.content)
 
 
 if not os.path.exists('model.h5'):
 	print('downloading model')
 	file = requests.get('https://srv-store1.gofile.io/download/qc40yD/model.h5')
 	open('model.h5','wb').write(file.content)
-'''
 
+
+
+'''
 def download_url(url, save_path, chunk_size=128):
 	print('downloading ... ')
 	r = requests.get(url, stream=True)
@@ -53,11 +54,9 @@ def download_url(url, save_path, chunk_size=128):
 
 if not os.path.exists('files.zip'):
 	download_url('https://srv-store5.gofile.io/download/MIVJZ4/matty.shakespeare.tar.gz' , 'files.zip')
-# 	print('downloading files...')
-# 	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
-# 	open('files.zip','wb').write(file.content)
-	
-
+	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
+	open('files.zip','wb').write(file.content)
+'''
 
 
 
