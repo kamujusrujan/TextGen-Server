@@ -39,12 +39,14 @@ if not os.path.exists('model.h5'):
 '''
 
 def download_url(url, save_path, chunk_size=128):
-    print('downloading ... ')
-    r = requests.get(url, stream=True)
-    with open(save_path, 'wb') as fd:
-        for chunk in r.iter_content(chunk_size=chunk_size):
-            fd.write(chunk)
-
+	print('downloading ... ')
+	r = requests.get(url, stream=True)
+	with open(save_path, 'wb') as fd:
+		for chunk in r.iter_content(chunk_size=chunk_size):
+			fd.write(chunk)
+	print(os.system('file *'))
+	with ZipFile('files.zip','r') as file:
+		file.extractall()
 
 
 
@@ -54,10 +56,8 @@ if not os.path.exists('files.zip'):
 # 	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
 # 	open('files.zip','wb').write(file.content)
 	
-# print(os.system('file *'))
 
-# with ZipFile('files.zip','rb') as file:
-# 	file.extractall()
+
 
 
 
