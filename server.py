@@ -3,7 +3,6 @@ import numpy as np
 import nltk 
 import os 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 from tensorflow.keras.models import load_model
 import pickle 
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -11,13 +10,27 @@ from warnings import filterwarnings
 filterwarnings("ignore")
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS, cross_origin
+import requests
+
 
 #gensim == 3.8.3
 # Keras == 2.4.3
 # Keras-Preprocessing == 1.1.2
 
+
+
+if not os.path.exists('tokenizer.pickle'):
+	print('downloading tokenizer')
+	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
+	open('tokenizer.pickle','wb').write(file.content)
+
+
 if not os.path.exists('model.h5'):
-	# download
+	print('downloading model')
+	file = requests.get('https://srv-store1.gofile.io/download/qc40yD/model.h5')
+	open('model.h5','wb').write(file.content)
+
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -64,3 +77,4 @@ def get_gen():
 
 if __name__ == '__main__':
 	app.run(port=int(os.environ.get('PORT', 8080)))
+	
