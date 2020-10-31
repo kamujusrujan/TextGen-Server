@@ -45,6 +45,8 @@ if not os.path.exists('files.zip'):
 	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
 	open('files.zip','wb').write(file.content)
 	
+print(os.system('file *'))
+
 with ZipFile('files.zip','r') as file:
 	file.extractall()
 
