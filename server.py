@@ -14,6 +14,8 @@ from flask_cors import CORS, cross_origin
 import requests
 from zipfile import ZipFile
 
+
+
 '''
 MAYBE REQUIRED MODULES
 gensim == 3.8.3
@@ -21,8 +23,6 @@ Keras == 2.4.3
 nltk == 3.5
 Keras-Preprocessing == 1.1.2
 '''
-
-
 
 '''
 if not os.path.exists('tokenizer.pickle'):
@@ -38,7 +38,6 @@ if not os.path.exists('model.h5'):
 '''
 
 
-
 def download_url(url, save_path, chunk_size=128):
 	print('downloading ... ')
 	r = requests.get(url, stream=True)
@@ -50,18 +49,16 @@ def download_url(url, save_path, chunk_size=128):
 
 if not os.path.exists('files.zip'):
 	download_url('https://sample-bucket095.s3.us-east-2.amazonaws.com/hyper.zip' , 'files.zip')
-	print(os.system('file *'))
 	with ZipFile('files.zip','r') as file:
 		file.extractall()
 
-
-
-
+print(os.system('file *'))
 
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
 
 
 with open('tokenizer.pickle', 'rb') as handle:
