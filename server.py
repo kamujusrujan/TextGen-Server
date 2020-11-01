@@ -24,18 +24,6 @@ nltk == 3.5
 Keras-Preprocessing == 1.1.2
 '''
 
-'''
-if not os.path.exists('tokenizer.pickle'):
-	print('downloading tokenizer')
-	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
-	open('tokenizer.pickle','wb').write(file.content)
-
-
-if not os.path.exists('model.h5'):
-	print('downloading model')
-	file = requests.get('https://srv-store1.gofile.io/download/qc40yD/model.h5')
-	open('model.h5','wb').write(file.content)
-'''
 
 
 def download_url(url, save_path, chunk_size=128):
@@ -87,7 +75,7 @@ def random_headline():
 	number_of_titles = int(request.args.get('items',10))
 	response_texts = []
 	for i in range(number_of_titles):
-		i_response = get_title(" ".join(np.random.choice(all_words,10)))
+		i_response = get_title(" ".join(np.random.choice(all_words,10)) )
 		response_texts.append(" ".join(i_response))
 	return jsonify({'articles' : response_texts})
 
@@ -95,11 +83,11 @@ def random_headline():
 
 @app.route("/generate" , methods = ['GET'])
 def get_gen():
-	key_words = request.args.get('terms')
+	key_words = request.args.get('terms' ," ".join(np.random.choice(all_words,10)))
 	response_text = ' '.join(get_title(key_words))
 	return jsonify({'article': response_text})
 
 
 if __name__ == '__main__':
-	app.run(port=int(os.environ.get('PORT', port=int(os.environ.get('PORT', 8080)))))
+	app.run(port=int((os.environ.get('PORT', 8080))))
 
