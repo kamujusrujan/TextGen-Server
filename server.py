@@ -41,6 +41,7 @@ if not os.path.exists('files.zip'):
 	with ZipFile('files.zip','r') as file:
 		file.extractall()
 
+
 print(os.system('file *'))
 
 
@@ -89,7 +90,7 @@ def get_gen():
 
 
 if __name__ == '__main__':
-	port=int((os.environ.get('PORT', 8080)))
+	port=int((os.environ.get('PORT', 5000)))
 	print(port) 
-	app.run(port=port)
+	app.run( host='0.0.0.0' , port=port )
 
