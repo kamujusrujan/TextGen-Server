@@ -44,6 +44,7 @@ def download_url(url, save_path, chunk_size=128):
 	with open(save_path, 'wb') as fd:
 		for chunk in r.iter_content(chunk_size=chunk_size):
 			fd.write(chunk)
+	print('Completed downloading . . . ')
 	
 
 
@@ -100,5 +101,5 @@ def get_gen():
 
 
 if __name__ == '__main__':
-	app.run(port=int(os.environ.get('PORT', 8080)))
+	app.run(port=int(os.environ.get('PORT', port=int(os.environ.get('PORT', 8080)))))
 
