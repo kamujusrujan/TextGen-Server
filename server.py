@@ -24,7 +24,7 @@ Keras-Preprocessing == 1.1.2
 
 
 
-
+'''
 if not os.path.exists('tokenizer.pickle'):
 	print('downloading tokenizer')
 	file = requests.get('https://srv-store1.gofile.io/download/Q4DIiu/tokenizer.pickle')
@@ -35,28 +35,25 @@ if not os.path.exists('model.h5'):
 	print('downloading model')
 	file = requests.get('https://srv-store1.gofile.io/download/qc40yD/model.h5')
 	open('model.h5','wb').write(file.content)
-
-
-
 '''
+
+
+
 def download_url(url, save_path, chunk_size=128):
 	print('downloading ... ')
 	r = requests.get(url, stream=True)
 	with open(save_path, 'wb') as fd:
 		for chunk in r.iter_content(chunk_size=chunk_size):
 			fd.write(chunk)
-	print(os.system('file *'))
-	filename = filename.encode("utf-8")
-	with ZipFile('files.zip','r') as file:
-		file.extractall()
-
+	
 
 
 if not os.path.exists('files.zip'):
-	download_url('https://srv-store5.gofile.io/download/MIVJZ4/matty.shakespeare.tar.gz' , 'files.zip')
-	file = requests.get('https://srv-store1.gofile.io/download/SCImIs/model.zip')
-	open('files.zip','wb').write(file.content)
-'''
+	download_url('https://sample-bucket095.s3.us-east-2.amazonaws.com/hyper.zip' , 'files.zip')
+	print(os.system('file *'))
+	with ZipFile('files.zip','r') as file:
+		file.extractall()
+
 
 
 
