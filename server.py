@@ -13,7 +13,7 @@ from flask import Flask, abort, jsonify, request
 from flask_cors import CORS, cross_origin
 import requests
 from zipfile import ZipFile
-
+from utils import *
 
 
 '''
@@ -42,7 +42,6 @@ if not os.path.exists('files.zip'):
 		file.extractall()
 
 
-print(os.system('file *'))
 
 
 app = Flask(__name__)
@@ -54,9 +53,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 with open('tokenizer.pickle', 'rb') as handle:
 	tokenizer = pickle.load(handle)
 
-
 all_words = list(tokenizer.word_index.keys())
-
 model = load_model('hyper.h5')
 
 
@@ -67,8 +64,7 @@ def get_title(text):
   out = model.predict(temp)
   sentence = [ np.argmax(word)  for word in out[0]]
   decoded = [ tokenizer.index_word[index]  for index in sentence if index!= 0 ]
-
-  return decoded[1:-1]
+  return decoded[1:-1] 
 
 
 @app.route('/random')
@@ -76,8 +72,10 @@ def random_headline():
 	number_of_titles = int(request.args.get('items',10))
 	response_texts = []
 	for i in range(number_of_titles):
-		i_response = get_title(" ".join(np.random.choice(all_words,10)) )
-		response_texts.append(" ".join(i_response))
+		key_words = request.args.get('terms' ," ".join(np.random.choice(all_words,10)))
+		generated_news = get_title(key_words)
+		response_data = Article(title = ' '.join(generated_news),key_words =  generated_news) 
+		response_texts.append(response_data.get_response())
 	return jsonify({'articles' : response_texts})
 
 
@@ -85,12 +83,13 @@ def random_headline():
 @app.route("/generate" , methods = ['GET'])
 def get_gen():
 	key_words = request.args.get('terms' ," ".join(np.random.choice(all_words,10)))
-	response_text = ' '.join(get_title(key_words))
-	return jsonify({'article': response_text})
+	generated_news = get_title(key_words)
+	response_data = Article(title = ' '.join(generated_news), key_words =  generated_news) 
+	return jsonify({'article': response_data.get_response()})
 
 
 if __name__ == '__main__':
 	port=int((os.environ.get('PORT', 5000)))
 	print(port) 
-	app.run( host='0.0.0.0' , port=port )
+	app.run( host='0.0.0.0' , port=port ,debug= True)
 
