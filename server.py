@@ -37,7 +37,7 @@ def download_url(url, save_path, chunk_size=128):
 
 
 if not os.path.exists('files.zip'):
-    download_url('https://sample-bucket095.s3.us-east-2.amazonaws.com/hyper.zip' , 'files.zip')
+    download_url('https://publicfilesyans.s3.ap-south-1.amazonaws.com/files.zip' , 'files.zip')
     with ZipFile('files.zip','r') as file:
         file.extractall()
 
