@@ -54,7 +54,7 @@ with open('tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
 
 all_words = list(tokenizer.word_index.keys())
-model = load_model('hyper.h5')
+model = load_model('model.h5')
 
 
 def get_title(text):
