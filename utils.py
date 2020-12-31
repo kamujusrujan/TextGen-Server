@@ -20,7 +20,7 @@ class Article():
 		self.title = title
 		self.publisher = publisher if publisher else "NY times"
 		self.date = date if date else get_random_date()
-		self.author = author if author else "Random nigga"
+		self.author = author if author else "Random Person"
 		self.key_words = key_words 
 	
 	def get_response(self):
